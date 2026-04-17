@@ -115,12 +115,20 @@ async def process_document(file: UploadFile = File(...)):
         output_path = TEMP_DIR / f"result_{uuid.uuid4()}.docx"
         doc.save(str(output_path))
 
+        # ASCII-safe filename (Cyrillic in Content-Disposition breaks latin-1)
+        safe_stem = "".join(
+            c if c.isascii() and c.isalnum() or c in "-_" else "_"
+            for c in Path(file.filename).stem
+        ) or "document"
+        # URL-encode header values to keep latin-1 compatibility
+        from urllib.parse import quote
         return FileResponse(
             path=str(output_path),
             media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            filename=f"template_{Path(file.filename).stem}.docx",
+            filename=f"template_{safe_stem}.docx",
             headers={
-                "X-Detected-Source": analysis.detected_source,
+                "X-Detected-Source-Id": analysis.detected_source_id,
+                "X-Detected-Source": quote(analysis.detected_source),
                 "X-Confidence": f"{analysis.confidence:.2f}",
                 "X-Mappings-Count": str(len([m for m in analysis.mappings if m.dynamic])),
                 "X-Unmapped-Count": str(len(analysis.unmapped)),
