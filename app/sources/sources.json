@@ -1,0 +1,476 @@
+{
+  "sources": [
+    {
+      "id": "labor_contract",
+      "name": "Трудовой договор",
+      "description": "Шаблон трудового договора с сотрудником",
+      "variables": [
+        {
+          "code": "filial_name",
+          "label": "Организация",
+          "type": "string",
+          "dynamic": false,
+          "markers": ["организация", "компания", "работодатель", "ООО", "СП", "tashkilot"],
+          "entity_types": []
+        },
+        {
+          "code": "filial_inn",
+          "label": "ИНН организации",
+          "type": "string",
+          "dynamic": false,
+          "markers": ["ИНН", "ИНН:"],
+          "entity_types": ["INN_LEGAL"]
+        },
+        {
+          "code": "filial_address",
+          "label": "Юридический адрес организации",
+          "type": "string",
+          "dynamic": false,
+          "markers": ["юридический адрес", "адрес организации", "расположенн"],
+          "entity_types": ["ADDRESS"]
+        },
+        {
+          "code": "filial_phone",
+          "label": "Телефон организации",
+          "type": "string",
+          "dynamic": false,
+          "markers": ["телефон", "тел.", "тел:"],
+          "entity_types": ["PHONE"]
+        },
+        {
+          "code": "director_name",
+          "label": "ФИО руководителя",
+          "type": "string",
+          "dynamic": false,
+          "markers": ["директор", "руководитель", "генеральный директор", "rahbar", "лице"],
+          "entity_types": ["FIO"]
+        },
+        {
+          "code": "director_job_name",
+          "label": "Должность руководителя",
+          "type": "string",
+          "dynamic": false,
+          "markers": ["должность руководителя", "генеральный директор"]
+        },
+        {
+          "code": "employee_name",
+          "label": "ФИО работника",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["работник", "гражданин", "гражданка", "xodim", "принимается", "именуемый"],
+          "entity_types": ["FIO"]
+        },
+        {
+          "code": "job_name",
+          "label": "Должность",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["должность", "на должность", "lavozim", "в качестве"],
+          "entity_types": ["JOB"]
+        },
+        {
+          "code": "division_name",
+          "label": "Подразделение",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["отдел", "подразделение", "bo'lim", "департамент"]
+        },
+        {
+          "code": "wage",
+          "label": "Оклад",
+          "type": "money",
+          "dynamic": true,
+          "markers": ["оклад", "заработная плата", "maosh", "oylik", "размере"],
+          "entity_types": ["MONEY"]
+        },
+        {
+          "code": "begin_date",
+          "label": "Дата начала работы",
+          "type": "date",
+          "dynamic": true,
+          "markers": ["начало работы", "принимается с", "приступает", "с даты"],
+          "entity_types": ["DATE"]
+        },
+        {
+          "code": "contract_number",
+          "label": "Номер договора",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["№", "номер договора", "трудовой договор №"],
+          "entity_types": ["DOC_NUMBER"]
+        },
+        {
+          "code": "contract_date",
+          "label": "Дата договора",
+          "type": "date",
+          "dynamic": true,
+          "markers": ["от", "дата договора"],
+          "entity_types": ["DATE"]
+        },
+        {
+          "code": "passport",
+          "label": "Паспорт работника",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["паспорт", "pasport", "серия"],
+          "entity_types": ["PASSPORT"]
+        },
+        {
+          "code": "tin",
+          "label": "ИНН работника",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["ИНН работника", "ИНН сотрудника", "СТИР"],
+          "entity_types": ["INN_PERSON"]
+        },
+        {
+          "code": "employee_address",
+          "label": "Адрес работника",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["адрес проживания", "проживающ", "адрес работника"],
+          "entity_types": ["ADDRESS"]
+        }
+      ]
+    },
+    {
+      "id": "business_trip",
+      "name": "Командировка",
+      "description": "Приказ о направлении работника в командировку",
+      "variables": [
+        {
+          "code": "filial_name",
+          "label": "Организация",
+          "type": "string",
+          "dynamic": false,
+          "markers": ["СП", "ООО", "организация"]
+        },
+        {
+          "code": "journal_doc_number",
+          "label": "Номер приказа",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["номер документа", "№", "приказ №"],
+          "entity_types": ["DOC_NUMBER"]
+        },
+        {
+          "code": "journal_doc_date",
+          "label": "Дата приказа",
+          "type": "date",
+          "dynamic": true,
+          "markers": ["дата", "от"],
+          "entity_types": ["DATE"]
+        },
+        {
+          "code": "employee_name",
+          "label": "ФИО работника",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["направить", "командировать", "работник"],
+          "entity_types": ["FIO"]
+        },
+        {
+          "code": "staff_number",
+          "label": "Табельный номер",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["табельный", "табельный номер"]
+        },
+        {
+          "code": "job_name",
+          "label": "Должность",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["должность"],
+          "entity_types": ["JOB"]
+        },
+        {
+          "code": "division_name",
+          "label": "Подразделение",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["отдел", "подразделение"]
+        },
+        {
+          "code": "destination",
+          "label": "Место назначения",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["место назначения", "командировка в", "пункт назначения"]
+        },
+        {
+          "code": "days_count",
+          "label": "Количество дней",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["календарных дней", "дней", "срок", "сроком"],
+          "entity_types": ["DAYS_COUNT"]
+        },
+        {
+          "code": "begin_date",
+          "label": "Дата начала",
+          "type": "date",
+          "dynamic": true,
+          "markers": ["начало", "с"],
+          "entity_types": ["DATE"]
+        },
+        {
+          "code": "end_date",
+          "label": "Дата окончания",
+          "type": "date",
+          "dynamic": true,
+          "markers": ["окончание", "по"],
+          "entity_types": ["DATE"]
+        },
+        {
+          "code": "purpose",
+          "label": "Цель командировки",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["с целью", "цель", "для"]
+        },
+        {
+          "code": "base",
+          "label": "Основание",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["основание", "на основании"]
+        },
+        {
+          "code": "signer_name",
+          "label": "Подписант",
+          "type": "string",
+          "dynamic": false,
+          "markers": ["начальник", "руководитель", "подпись"],
+          "entity_types": ["FIO"]
+        }
+      ]
+    },
+    {
+      "id": "sick_leave_list",
+      "name": "Больничный лист списком",
+      "description": "Приказ по больничным листам сотрудников",
+      "variables": [
+        {
+          "code": "filial_name",
+          "label": "Организация",
+          "type": "string",
+          "dynamic": false,
+          "markers": ["организация", "компания", "филиал"]
+        },
+        {
+          "code": "director_name",
+          "label": "ФИО руководителя",
+          "type": "string",
+          "dynamic": false,
+          "markers": ["директор", "руководитель", "генеральный"],
+          "entity_types": ["FIO"]
+        },
+        {
+          "code": "director_job_name",
+          "label": "Должность руководителя",
+          "type": "string",
+          "dynamic": false,
+          "markers": ["должность руководителя", "директор"]
+        },
+        {
+          "code": "journal_number",
+          "label": "Номер документа",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["номер документа", "№"],
+          "entity_types": ["DOC_NUMBER"]
+        },
+        {
+          "code": "journal_date",
+          "label": "Дата документа",
+          "type": "date",
+          "dynamic": true,
+          "markers": ["дата документа", "от"],
+          "entity_types": ["DATE"]
+        },
+        {
+          "code": "journal_name",
+          "label": "Название документа",
+          "type": "string",
+          "dynamic": false,
+          "markers": ["приказ", "название документа"]
+        },
+        {
+          "code": "journal_doc_number",
+          "label": "Номер печатного документа",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["номер печатного", "№"],
+          "entity_types": ["DOC_NUMBER"]
+        },
+        {
+          "code": "journal_doc_date",
+          "label": "Дата печатного документа",
+          "type": "date",
+          "dynamic": true,
+          "markers": ["дата печатного", "от"],
+          "entity_types": ["DATE"]
+        },
+        {
+          "code": "note",
+          "label": "Примечание",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["примечание", "примечания"]
+        },
+        {
+          "code": "base",
+          "label": "Основание",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["основание", "на основании"]
+        },
+        {
+          "code": "sick_leaves",
+          "label": "Больничные листы",
+          "type": "collection",
+          "dynamic": true,
+          "markers": [],
+          "entity_types": [],
+          "fields": [
+            {"code": "division_name", "label": "Подразделение", "type": "string", "markers": ["подразделение", "отдел"]},
+            {"code": "job_name", "label": "Должность", "type": "string", "markers": ["должность"], "entity_types": ["JOB"]},
+            {"code": "employee_name", "label": "Сотрудник", "type": "string", "markers": ["сотрудник", "работник"], "entity_types": ["FIO"]},
+            {"code": "sick_leave_number", "label": "Номер больничного листа", "type": "string", "markers": ["номер больничного"], "entity_types": ["DOC_NUMBER"]},
+            {"code": "begin_date", "label": "Дата начала", "type": "date", "markers": ["дата начала", "с"], "entity_types": ["DATE"]},
+            {"code": "end_date", "label": "Дата окончания", "type": "date", "markers": ["дата окончания", "по"], "entity_types": ["DATE"]},
+            {"code": "reason_name", "label": "Причина", "type": "string", "markers": ["причина"]},
+            {"code": "coefficient", "label": "Коэффициент", "type": "number", "markers": ["коэффициент"]},
+            {"code": "coefficient_percentage", "label": "Коэффициент процент", "type": "number", "markers": ["процент", "%"]},
+            {"code": "return_work_day", "label": "Дата выхода на работу", "type": "date", "markers": ["дата выхода", "выход на работу"], "entity_types": ["DATE"]},
+            {"code": "days_count", "label": "Кол-во дней больничного", "type": "number", "markers": ["дней больничного", "количество дней"]},
+            {"code": "sick_leave_payment", "label": "Сумма больничного", "type": "money", "markers": ["сумма больничного", "оплата"], "entity_types": ["MONEY"]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "payroll_book",
+      "name": "Книга начисления заработной платы",
+      "description": "Ведомость по зарплате за период",
+      "variables": [
+        {
+          "code": "filial_name",
+          "label": "Организация",
+          "type": "string",
+          "dynamic": false,
+          "markers": ["организация", "компания"]
+        },
+        {
+          "code": "divisions",
+          "label": "Подразделения",
+          "type": "string",
+          "dynamic": true,
+          "markers": ["подразделение", "отдел"]
+        },
+        {
+          "code": "begin_date",
+          "label": "Начало отчетного периода",
+          "type": "date",
+          "dynamic": true,
+          "markers": ["начало периода", "с", "за период с"],
+          "entity_types": ["DATE"]
+        },
+        {
+          "code": "end_date",
+          "label": "Конец отчетного периода",
+          "type": "date",
+          "dynamic": true,
+          "markers": ["конец периода", "по"],
+          "entity_types": ["DATE"]
+        },
+        {"code": "initial_balance", "label": "Сальдо на начало", "type": "money", "dynamic": true, "markers": ["сальдо на начало"], "entity_types": ["MONEY"]},
+        {"code": "wage_accrual", "label": "По окладу", "type": "money", "dynamic": true, "markers": ["по окладу"], "entity_types": ["MONEY"]},
+        {"code": "other_accrual", "label": "Прочие начисления", "type": "money", "dynamic": true, "markers": ["прочие начисления"], "entity_types": ["MONEY"]},
+        {"code": "total_accrual", "label": "Всего начислено", "type": "money", "dynamic": true, "markers": ["всего начислено", "итого начислено"], "entity_types": ["MONEY"]},
+        {"code": "income_tax", "label": "Налог на доходы", "type": "money", "dynamic": true, "markers": ["налог на доходы", "НДФЛ"], "entity_types": ["MONEY"]},
+        {"code": "pension_payment", "label": "В том числе ИНПС", "type": "money", "dynamic": true, "markers": ["ИНПС", "пенсион"], "entity_types": ["MONEY"]},
+        {"code": "other_deduction", "label": "Прочие удержания", "type": "money", "dynamic": true, "markers": ["прочие удержания"], "entity_types": ["MONEY"]},
+        {"code": "total_deduction", "label": "Всего удержано", "type": "money", "dynamic": true, "markers": ["всего удержано", "итого удержано"], "entity_types": ["MONEY"]},
+        {"code": "payment", "label": "Оплаты", "type": "money", "dynamic": true, "markers": ["оплаты", "выплаты"], "entity_types": ["MONEY"]},
+        {"code": "final_balance", "label": "Сальдо на конец", "type": "money", "dynamic": true, "markers": ["сальдо на конец"], "entity_types": ["MONEY"]},
+        {"code": "social_payment", "label": "Социальный налог", "type": "money", "dynamic": true, "markers": ["социальный налог"], "entity_types": ["MONEY"]},
+        {"code": "given_year_income", "label": "Доход с начала года", "type": "money", "dynamic": true, "markers": ["доход с начала года"], "entity_types": ["MONEY"]},
+        {"code": "given_year_income_tax", "label": "Налог на доходы с начала года", "type": "money", "dynamic": true, "markers": ["налог с начала года"], "entity_types": ["MONEY"]},
+        {"code": "given_year_social_payment", "label": "Социальный налог с начала года", "type": "money", "dynamic": true, "markers": ["социальный налог с начала года"], "entity_types": ["MONEY"]},
+        {
+          "code": "staffs",
+          "label": "Сотрудники",
+          "type": "collection",
+          "dynamic": true,
+          "markers": [],
+          "entity_types": [],
+          "fields": [
+            {"code": "order_no", "label": "Порядковый номер", "type": "string"},
+            {"code": "staff_number", "label": "Табельный номер", "type": "string", "markers": ["табельный"]},
+            {"code": "name", "label": "Ф.И.О.", "type": "string", "entity_types": ["FIO"]},
+            {"code": "tin", "label": "ИНН", "type": "string", "entity_types": ["INN_PERSON"]},
+            {"code": "iapa", "label": "ИНПС", "type": "string"},
+            {"code": "job_name", "label": "Должность", "type": "string", "entity_types": ["JOB"]},
+            {"code": "rank_name", "label": "Разряд", "type": "string"},
+            {"code": "wage", "label": "Оклад", "type": "money", "entity_types": ["MONEY"]},
+            {"code": "fact_days", "label": "Отработано дней", "type": "string"},
+            {"code": "fact_hours", "label": "Отработано часов", "type": "string"},
+            {"code": "initial_balance", "label": "Сальдо на начало", "type": "money"},
+            {"code": "wage_accrual", "label": "По окладу", "type": "money"},
+            {"code": "other_accrual", "label": "Прочие начисления", "type": "money"},
+            {"code": "total_accrual", "label": "Всего", "type": "money"},
+            {"code": "income_tax", "label": "Налог на доходы", "type": "money"},
+            {"code": "pension_payment", "label": "В том числе ИНПС", "type": "money"},
+            {"code": "other_deduction", "label": "Прочие удержания", "type": "money"},
+            {"code": "total_deduction", "label": "Всего", "type": "money"},
+            {"code": "payment", "label": "Оплаты", "type": "money"},
+            {"code": "final_balance", "label": "Сальдо на конец", "type": "money"},
+            {"code": "social_payment", "label": "Социальный налог", "type": "money"},
+            {"code": "given_year_income", "label": "Доход с начала года", "type": "money"},
+            {"code": "given_year_income_tax", "label": "Налог на доходы с начала года", "type": "money"},
+            {"code": "given_year_social_payment", "label": "Социальный налог с начала года", "type": "money"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "staff_transfer_list",
+      "name": "Приказ о кадровом переводе списком",
+      "description": "Приказ о переводе сотрудников списком",
+      "variables": [
+        {"code": "filial_name", "label": "Название организации", "type": "string", "dynamic": false, "markers": ["организация", "компания"]},
+        {"code": "director_name", "label": "ФИО руководителя", "type": "string", "dynamic": false, "markers": ["директор", "руководитель"], "entity_types": ["FIO"]},
+        {"code": "director_job_name", "label": "Должность руководителя", "type": "string", "dynamic": false, "markers": ["должность руководителя"]},
+        {"code": "journal_number", "label": "Номер документа", "type": "string", "dynamic": true, "markers": ["№"], "entity_types": ["DOC_NUMBER"]},
+        {"code": "journal_date", "label": "Дата документа", "type": "date", "dynamic": true, "markers": ["дата", "от"], "entity_types": ["DATE"]},
+        {"code": "journal_name", "label": "Название документа", "type": "string", "dynamic": false},
+        {"code": "journal_doc_number", "label": "Номер печатного документа", "type": "string", "dynamic": true, "markers": ["№"], "entity_types": ["DOC_NUMBER"]},
+        {"code": "journal_doc_date", "label": "Дата печатного документа", "type": "date", "dynamic": true, "markers": ["от"], "entity_types": ["DATE"]},
+        {
+          "code": "transfers",
+          "label": "Список сотрудников",
+          "type": "collection",
+          "dynamic": true,
+          "markers": [],
+          "entity_types": [],
+          "fields": [
+            {"code": "transfer_kind_name", "label": "Вид перевода", "type": "string", "markers": ["вид перевода"]},
+            {"code": "transfer_begin", "label": "Начало перевода", "type": "date", "markers": ["начало перевода"], "entity_types": ["DATE"]},
+            {"code": "transfer_end", "label": "Окончание перевода", "type": "date", "markers": ["окончание перевода"], "entity_types": ["DATE"]},
+            {"code": "transfer_reason", "label": "Причина перевода", "type": "string", "markers": ["причина перевода"]},
+            {"code": "transfer_base", "label": "Основание перевода", "type": "string", "markers": ["основание перевода"]},
+            {"code": "employee_name", "label": "Сотрудник", "type": "string", "markers": ["сотрудник", "работник"], "entity_types": ["FIO"]},
+            {"code": "old_staff_number", "label": "Прежний табельный номер", "type": "string", "markers": ["прежний номер"]},
+            {"code": "staff_number", "label": "Табельный номер", "type": "string", "markers": ["табельный номер"]},
+            {"code": "old_division_name", "label": "Прежнее подразделение", "type": "string", "markers": ["прежнее подразделение"]},
+            {"code": "division_name", "label": "Новое подразделение", "type": "string", "markers": ["новое подразделение"]},
+            {"code": "old_job_name", "label": "Прежняя должность", "type": "string", "markers": ["прежняя должность"], "entity_types": ["JOB"]},
+            {"code": "job_name", "label": "Новая должность", "type": "string", "markers": ["новая должность"], "entity_types": ["JOB"]}
+          ]
+        }
+      ]
+    }
+  ]
+}

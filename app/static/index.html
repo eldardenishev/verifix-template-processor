@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifix Template Processor</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-bottom: 1px solid #1e293b;
+            padding: 20px 0;
+        }
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; font-weight: 700; color: #fff;
+        }
+        .logo-text { font-size: 20px; font-weight: 600; color: #f1f5f9; }
+        .logo-sub { font-size: 12px; color: #64748b; }
+        .badge {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 24px;
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 4px;
+            width: fit-content;
+        }
+        .tab {
+            padding: 10px 24px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tab.active {
+            background: #3b82f6;
+            color: #fff;
+        }
+        .tab:hover:not(.active) { color: #e2e8f0; background: #334155; }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 768px) {
+            .main-grid { grid-template-columns: 1fr; }
+        }
+        .panel {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .panel-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #334155;
+            font-size: 14px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .panel-body { padding: 20px; }
+
+        /* Upload zone */
+        .upload-zone {
+            border: 2px dashed #334155;
+            border-radius: 12px;
+            padding: 48px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .upload-zone:hover, .upload-zone.dragover {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+        }
+        .upload-zone.has-file {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.05);
+        }
+        .upload-icon {
+            width: 64px; height: 64px;
+            margin: 0 auto 16px;
+            background: #334155;
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px;
+        }
+        .upload-zone.has-file .upload-icon { background: rgba(34, 197, 94, 0.15); }
+        .upload-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: #f1f5f9; }
+        .upload-hint { font-size: 13px; color: #64748b; }
+        .file-input { display: none; }
+        .file-info {
+            margin-top: 12px;
+            padding: 10px 16px;
+            background: #0f172a;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #94a3b8;
+            display: none;
+        }
+        .file-info.visible { display: flex; align-items: center; gap: 8px; }
+        .file-name { color: #e2e8f0; font-weight: 500; }
+        .file-size { color: #64748b; }
+        .file-remove {
+            margin-left: auto;
+            background: none; border: none;
+            color: #ef4444; cursor: pointer; font-size: 18px;
+        }
+
+        /* Buttons */
+        .actions { margin-top: 20px; display: flex; gap: 12px; }
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: #fff;
+            flex: 1;
+        }
+        .btn-primary:hover:not(:disabled) { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+        .btn-secondary {
+            background: #334155;
+            color: #e2e8f0;
+        }
+        .btn-secondary:hover:not(:disabled) { background: #475569; }
+
+        /* Progress */
+        .progress-bar {
+            display: none;
+            margin-top: 16px;
+        }
+        .progress-bar.visible { display: block; }
+        .progress-track {
+            height: 4px;
+            background: #334155;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s;
+            animation: progress-pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes progress-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .progress-text {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        /* Results */
+        .results { display: none; }
+        .results.visible { display: block; }
+        .result-card {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .result-source {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+        .confidence-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .confidence-high { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+        .confidence-medium { background: rgba(234, 179, 8, 0.15); color: #facc15; }
+        .confidence-low { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+
+        .stats-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .stat {
+            flex: 1;
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        .stat-value { font-size: 24px; font-weight: 700; color: #f1f5f9; }
+        .stat-label { font-size: 11px; color: #64748b; margin-top: 4px; text-transform: uppercase; }
+
+        .mapping-list { max-height: 400px; overflow-y: auto; }
+        .mapping-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-bottom: 1px solid #1e293b;
+            font-size: 13px;
+        }
+        .mapping-item:last-child { border-bottom: none; }
+        .mapping-original {
+            background: #334155;
+            padding: 4px 10px;
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-weight: 500;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .mapping-arrow { color: #3b82f6; font-size: 16px; flex-shrink: 0; }
+        .mapping-variable {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 12px;
+        }
+        .mapping-tag {
+            margin-left: auto;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .tag-dynamic { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+        .tag-static { background: rgba(148, 163, 184, 0.15); color: #94a3b8; }
+
+        .unmapped-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-bottom: 1px solid #1e293b;
+            font-size: 13px;
+        }
+        .unmapped-original {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        .unmapped-reason { color: #64748b; font-size: 12px; }
+
+        .download-section {
+            margin-top: 16px;
+            padding: 16px;
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            text-align: center;
+        }
+        .download-btn {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .download-btn:hover { background: linear-gradient(135deg, #16a34a, #15803d); }
+        .download-hint { font-size: 12px; color: #64748b; margin-top: 8px; }
+
+        /* Section titles */
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 16px 0 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #334155;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Error */
+        .error-msg {
+            display: none;
+            padding: 12px 16px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            color: #f87171;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+        .error-msg.visible { display: block; }
+
+        .full-width { grid-column: 1 / -1; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <div class="logo-icon">V</div>
+                <div>
+                    <div class="logo-text">Verifix Template Processor</div>
+                    <div class="logo-sub">Word -> MERGEFIELD Template</div>
+                </div>
+            </div>
+            <div class="badge">MVP v0.1</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab active" data-tab="process">Обработка</button>
+            <button class="tab" data-tab="analyze">Только анализ</button>
+        </div>
+
+        <div class="main-grid">
+            <!-- Left panel: Upload -->
+            <div class="panel">
+                <div class="panel-header">Загрузка документа</div>
+                <div class="panel-body">
+                    <div class="upload-zone" id="uploadZone">
+                        <div class="upload-icon" id="uploadIcon">&#128196;</div>
+                        <div class="upload-title" id="uploadTitle">Перетащите файл сюда</div>
+                        <div class="upload-hint" id="uploadHint">или нажмите для выбора (.docx, .doc)</div>
+                        <input type="file" class="file-input" id="fileInput" accept=".doc,.docx">
+                    </div>
+                    <div class="file-info" id="fileInfo">
+                        <span>&#128196;</span>
+                        <span class="file-name" id="fileName"></span>
+                        <span class="file-size" id="fileSize"></span>
+                        <button class="file-remove" id="fileRemove">&times;</button>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-primary" id="btnProcess" disabled>
+                            <span id="btnProcessIcon">&#9654;</span>
+                            <span id="btnProcessText">Обработать</span>
+                        </button>
+                    </div>
+                    <div class="progress-bar" id="progressBar">
+                        <div class="progress-track">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-text" id="progressText">Обработка...</div>
+                    </div>
+                    <div class="error-msg" id="errorMsg"></div>
+                </div>
+            </div>
+
+            <!-- Right panel: Results -->
+            <div class="panel">
+                <div class="panel-header">Результат</div>
+                <div class="panel-body">
+                    <div id="resultsPlaceholder" style="text-align:center; padding:40px 0; color:#475569;">
+                        <div style="font-size:48px; margin-bottom:12px;">&#128269;</div>
+                        <div>Загрузите документ и нажмите "Обработать"</div>
+                    </div>
+                    <div class="results" id="results">
+                        <div class="result-card">
+                            <div class="result-header">
+                                <div class="result-source" id="resultSource"></div>
+                                <div class="confidence-badge" id="resultConfidence"></div>
+                            </div>
+                            <div class="stats-row">
+                                <div class="stat">
+                                    <div class="stat-value" id="statMappings">0</div>
+                                    <div class="stat-label">Замен</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value" id="statStatic">0</div>
+                                    <div class="stat-label">Статичных</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value" id="statUnmapped">0</div>
+                                    <div class="stat-label">Не найдено</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="download-section" id="downloadSection" style="display:none;">
+                            <button class="download-btn" id="btnDownload">Скачать шаблон .docx</button>
+                            <div class="download-hint">Документ с MERGEFIELD полями готов</div>
+                        </div>
+
+                        <div class="section-title">Маппинги (MERGEFIELD замены)</div>
+                        <div class="result-card">
+                            <div class="mapping-list" id="mappingList"></div>
+                        </div>
+
+                        <div id="unmappedSection" style="display:none;">
+                            <div class="section-title">Не сопоставлено (выделено красным)</div>
+                            <div class="result-card">
+                                <div class="mapping-list" id="unmappedList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const fileRemove = document.getElementById('fileRemove');
+        const btnProcess = document.getElementById('btnProcess');
+        const btnProcessText = document.getElementById('btnProcessText');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const errorMsg = document.getElementById('errorMsg');
+        const results = document.getElementById('results');
+        const resultsPlaceholder = document.getElementById('resultsPlaceholder');
+        const downloadSection = document.getElementById('downloadSection');
+
+        let selectedFile = null;
+        let currentMode = 'process'; // 'process' or 'analyze'
+        let downloadBlob = null;
+        let downloadFilename = '';
+
+        // Tabs
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentMode = tab.dataset.tab;
+                btnProcessText.textContent = currentMode === 'process' ? 'Обработать' : 'Анализировать';
+            });
+        });
+
+        // Upload zone
+        uploadZone.addEventListener('click', () => fileInput.click());
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+        uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+        });
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length) handleFile(fileInput.files[0]);
+        });
+        fileRemove.addEventListener('click', clearFile);
+
+        function handleFile(file) {
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (!['doc', 'docx'].includes(ext)) {
+                showError('Поддерживаются только .doc и .docx файлы');
+                return;
+            }
+            selectedFile = file;
+            fileName.textContent = file.name;
+            fileSize.textContent = formatSize(file.size);
+            fileInfo.classList.add('visible');
+            uploadZone.classList.add('has-file');
+            document.getElementById('uploadTitle').textContent = 'Файл выбран';
+            document.getElementById('uploadHint').textContent = 'Нажмите для замены файла';
+            btnProcess.disabled = false;
+            hideError();
+        }
+
+        function clearFile() {
+            selectedFile = null;
+            fileInput.value = '';
+            fileInfo.classList.remove('visible');
+            uploadZone.classList.remove('has-file');
+            document.getElementById('uploadTitle').textContent = 'Перетащите файл сюда';
+            document.getElementById('uploadHint').textContent = 'или нажмите для выбора (.docx, .doc)';
+            btnProcess.disabled = true;
+        }
+
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / 1048576).toFixed(1) + ' MB';
+        }
+
+        // Process
+        btnProcess.addEventListener('click', async () => {
+            if (!selectedFile) return;
+            hideError();
+            results.classList.remove('visible');
+            resultsPlaceholder.style.display = 'none';
+            progressBar.classList.add('visible');
+            btnProcess.disabled = true;
+
+            const steps = [
+                'Загрузка файла...',
+                'Извлечение текста...',
+                'Распознавание сущностей...',
+                'Подбор источника...',
+                'Маппинг переменных...',
+                'Генерация шаблона...'
+            ];
+            let step = 0;
+            const stepInterval = setInterval(() => {
+                step = Math.min(step + 1, steps.length - 1);
+                progressFill.style.width = ((step + 1) / steps.length * 90) + '%';
+                progressText.textContent = steps[step];
+            }, 600);
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            try {
+                if (currentMode === 'analyze') {
+                    const resp = await fetch('/api/v1/analyze', { method: 'POST', body: formData });
+                    clearInterval(stepInterval);
+                    if (!resp.ok) {
+                        const err = await resp.json();
+                        throw new Error(err.detail || 'Server error');
+                    }
+                    const data = await resp.json();
+                    progressFill.style.width = '100%';
+                    progressText.textContent = 'Готово!';
+                    setTimeout(() => {
+                        progressBar.classList.remove('visible');
+                        showResults(data, false);
+                    }, 500);
+                } else {
+                    // Process mode: first analyze, then download
+                    const analyzeResp = await fetch('/api/v1/analyze', { method: 'POST', body: formData });
+                    if (!analyzeResp.ok) {
+                        const err = await analyzeResp.json();
+                        throw new Error(err.detail || 'Server error');
+                    }
+                    const analysisData = await analyzeResp.json();
+
+                    // Now get the processed file
+                    const formData2 = new FormData();
+                    formData2.append('file', selectedFile);
+                    const processResp = await fetch('/api/v1/process', { method: 'POST', body: formData2 });
+                    clearInterval(stepInterval);
+                    if (!processResp.ok) {
+                        const err = await processResp.json();
+                        throw new Error(err.detail || 'Server error');
+                    }
+
+                    downloadBlob = await processResp.blob();
+                    const cd = processResp.headers.get('content-disposition');
+                    downloadFilename = cd ? cd.split('filename=')[1]?.replace(/"/g, '') : 'template.docx';
+
+                    progressFill.style.width = '100%';
+                    progressText.textContent = 'Готово!';
+                    setTimeout(() => {
+                        progressBar.classList.remove('visible');
+                        showResults(analysisData, true);
+                    }, 500);
+                }
+            } catch (err) {
+                clearInterval(stepInterval);
+                progressBar.classList.remove('visible');
+                showError(err.message);
+            } finally {
+                btnProcess.disabled = false;
+            }
+        });
+
+        // Download
+        document.getElementById('btnDownload').addEventListener('click', () => {
+            if (!downloadBlob) return;
+            const url = URL.createObjectURL(downloadBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = downloadFilename || 'template.docx';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        function showResults(data, hasDownload) {
+            document.getElementById('resultSource').textContent = data.detected_source;
+            const conf = data.confidence;
+            const confEl = document.getElementById('resultConfidence');
+            confEl.textContent = (conf * 100).toFixed(0) + '%';
+            confEl.className = 'confidence-badge ' +
+                (conf >= 0.6 ? 'confidence-high' : conf >= 0.3 ? 'confidence-medium' : 'confidence-low');
+
+            const dynamicMappings = data.mappings.filter(m => m.dynamic);
+            const staticMappings = data.mappings.filter(m => !m.dynamic);
+
+            document.getElementById('statMappings').textContent = dynamicMappings.length;
+            document.getElementById('statStatic').textContent = staticMappings.length;
+            document.getElementById('statUnmapped').textContent = data.unmapped.length;
+
+            // Mappings list
+            const mappingList = document.getElementById('mappingList');
+            mappingList.innerHTML = '';
+            data.mappings.forEach(m => {
+                const div = document.createElement('div');
+                div.className = 'mapping-item';
+                div.innerHTML = `
+                    <span class="mapping-original" title="${escHtml(m.original)}">${escHtml(m.original)}</span>
+                    <span class="mapping-arrow">&rarr;</span>
+                    <span class="mapping-variable">${escHtml(m.variable)}</span>
+                    <span class="mapping-tag ${m.dynamic ? 'tag-dynamic' : 'tag-static'}">${m.dynamic ? 'MERGEFIELD' : 'as-is'}</span>
+                `;
+                mappingList.appendChild(div);
+            });
+
+            // Unmapped
+            const unmappedSection = document.getElementById('unmappedSection');
+            const unmappedList = document.getElementById('unmappedList');
+            unmappedList.innerHTML = '';
+            if (data.unmapped.length > 0) {
+                unmappedSection.style.display = 'block';
+                data.unmapped.forEach(u => {
+                    const div = document.createElement('div');
+                    div.className = 'unmapped-item';
+                    div.innerHTML = `
+                        <span class="unmapped-original">${escHtml(u.original)}</span>
+                        <span class="unmapped-reason">${escHtml(u.reason || '')}</span>
+                    `;
+                    unmappedList.appendChild(div);
+                });
+            } else {
+                unmappedSection.style.display = 'none';
+            }
+
+            // Download
+            downloadSection.style.display = hasDownload ? 'block' : 'none';
+
+            results.classList.add('visible');
+        }
+
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.classList.add('visible');
+        }
+        function hideError() {
+            errorMsg.classList.remove('visible');
+        }
+        function escHtml(str) {
+            const d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
+        }
+    </script>
+</body>
+</html>
